@@ -48,7 +48,7 @@ async function makeDirTree() {
             if (files.length > 0) {
                 for (const i of files) {
                     let name = i.type === 'dir' ? i.name : idx++;
-                    if (i.type === 'dir' && !i.path.match(/node_modules/)) {
+                    if (i.type === 'dir' && !i.path.match(/node_modules|.git|bower/)) {
                         dirs.push(i);
                     }
                     activeDir.files[name] = i;
@@ -75,7 +75,7 @@ async function makeDirTree() {
 function walkTree(dirPath) {
     let filesindir = [];
     return new Promise((res, rej) => {
-        if (dirPath.match(/node_modules/)) {
+        if (dirPath.match(/node_modules|.git|bower|LICENCE/)) {
             rej([]);
         }
         const relative = `${dirPath}/`;

@@ -121,7 +121,7 @@ class Watcher extends EventEmitter {
 
 
 function editLinks(data, links) {
-    console.log(data);
+    console.log(links[0]);
 }
 
 module.exports = Watcher;
