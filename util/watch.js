@@ -65,48 +65,48 @@ class Watcher extends EventEmitter {
     }
 
     async updateFiles(events, files) {
-        console.log(events, files);
         let renameOrMove = false,
             newPath = '';
         for (let i = 0; i < events.length; i++) {
             if (events[i] === 'add') {
                 if (events.length > 0) {
-                    console.log('file moved or renamed');
                     newPath = files[i];
                     renameOrMove = true;
-                } else this.emit('update');
+                }
             }
             if (events[i] === 'unlink') {
                 if (renameOrMove) await this.updatePath(files[i], newPath);
-                this.emit('update');
             }
         }
+        this.emit('update');
     }
 
     updatePath(oldPath, newPath) {
         let promiseList = [];
         oldPath = './' + oldPath;
+        newPath = './' + newPath;
         for (let i of Object.keys(this.files)) {
             if (this.files[i].path === oldPath) this.files[i].path = newPath;
             if (this.files[i].links.length > 0) {
                 this.files[i].links.map(async(j) => {
+                    let oldRelPath = calcRelPath(j, oldPath),
+                        newRelPath = calcRelPath(j, newPath);
                     for (let k of Object.values(this.files)) {
                         if (k.path === j) {
                             promiseList.push(new Promise(async(res, rej) => {
-                                let links = await findLinks(this.files[k.id].path, this.files[k.id].extension, 'findLinks'),
-                                    file;
+                                let file;
                                 readFile(this.files[k.id].path, 'utf-8')
                                     .then(data => {
-                                        file = editLinks(data, links);
+                                        file = editLinks(data, newRelPath, oldRelPath);
+                                        writeFile(this.files[k.id].path, file)
+                                            .then(() => {
+                                                res('Updated Reference links.');
+                                            })
+                                            .catch(() => {
+                                                rej();
+                                            })
                                     }).catch(err => {
                                         console.error(err);
-                                        rej();
-                                    })
-                                writeFile(this.files[k.id].path, file)
-                                    .then(() => {
-                                        res();
-                                    })
-                                    .catch(() => {
                                         rej();
                                     })
                             }))
@@ -120,8 +120,50 @@ class Watcher extends EventEmitter {
 }
 
 
-function editLinks(data, links) {
-    console.log(links[0]);
+function editLinks(data, newPath, oldPath) {
+    console.log('editing links...');
+    console.log(data, newPath, oldPath);
+    let newData = data;
+    newData.replace(oldPath, newPath);
+    return newData;
+}
+
+function calcRelPath(filePath, linkPath) {
+    let RelPath = '',
+        PathList = linkPath.split('/'),
+        filePathList = filePath.split('/');
+    if (filePathList.length > PathList.length) {
+        let idx = 0;
+        for (let i = 0; i < filePathList.length - 1; i++) {
+            if (PathList[i] !== undefined && PathList[i] !== filePathList[i]) {
+                idx = i;
+                break;
+            }
+        }
+
+        for (let i = 0; i < (filePathList.length - 1 - idx); i++) {
+            RelPath += '../';
+        }
+
+        for (let i = idx; i < PathList.length - 1; i++) {
+            RelPath += PathList[i] + '/';
+        }
+        RelPath += PathList[PathList.length - 1];
+    } else {
+        for (let i = 0; i < PathList.length; i++) {
+            if (filePathList[i] !== undefined && filePathList[i] !== PathList[i]) {
+                idx = i;
+                break;
+            }
+        }
+        RelPath += './';
+        for (let i = idx; i < PathList.length - 1; i++) {
+            RelPath += PathList[i] + '/';
+        }
+        RelPath += PathList[PathList.length - 1];
+    }
+
+    return RelPath;
 }
 
 module.exports = Watcher;

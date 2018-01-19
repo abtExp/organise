@@ -27,6 +27,7 @@ function init() {
             console.log('Created Directory Tree');
             console.log('Setting up watchers...');
             let watcher = new Watcher(AllFiles);
+            console.log('Watching for file changes...');
             watcher.on('update', () => {
                 console.log('Updating dirTree...')
                 keepOrganized().then((AllFiles) => {

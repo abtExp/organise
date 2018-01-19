@@ -11,7 +11,7 @@ const fs = require('fs'),
  * 
  * 
  */
-const root = '.';
+const root = './testFiles';
 
 let AllFiles = {},
     idx = 0,
@@ -37,13 +37,12 @@ async function makeDirTree() {
         dirs = [],
         dir = root,
         relative = '';
-    dirs.push({ name: 'root', type: 'dir', path: '.', files: {} });
-    dirTree['root'] = { name: 'root', type: 'dir', path: '.', files: {} };
+    dirs.push({ name: 'root', type: 'dir', path: `${dir}`, files: {} });
+    dirTree['root'] = { name: 'root', type: 'dir', path: `${dir}`, files: {} };
     return new Promise(async(res, rej) => {
         console.log('Reading files ...');
         while (dirs.length > 0) {
             let activeDir = dirs.shift();
-            console.log(`Reading ${activeDir.path}`);
             let files = await walkTree(activeDir.path);
             if (files.length > 0) {
                 for (const i of files) {
@@ -64,9 +63,7 @@ async function makeDirTree() {
 /**
  * @function walkTree - returns a sub tree for a directory
  * 
- * @param {string} dir - name of the directory
- * 
- * @param {string} relative - the relative path of the directory
+ * @param {string} dirPath - path of the directory
  * 
  * @returns {object}
  * 
@@ -79,7 +76,6 @@ function walkTree(dirPath) {
             rej([]);
         }
         const relative = `${dirPath}/`;
-        console.log(`Reading files from ${dirPath}`);
         readdir(relative)
             .then(files => {
                 files.map(async(i) => {

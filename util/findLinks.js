@@ -5,7 +5,6 @@ const fs = require('fs'),
 
 module.exports = function(dirpath, ext, mode = 'findPaths') {
     // Currently only for html, js and ts files
-    console.log('extension : ', ext);
     let links = [],
         regexp;
 
