@@ -79,7 +79,7 @@ class Watcher extends EventEmitter {
                 if (renameOrMove) {
                     await this.updatePath(files[i], newPath);
                     console.log('Emiting Update event >>>');
-                    this.emit('update');
+                    // this.emit('update');
                 }
             }
         }
@@ -90,34 +90,29 @@ class Watcher extends EventEmitter {
         oldPath = './' + oldPath;
         newPath = './' + newPath;
         for (let i of Object.keys(this.files)) {
-            console.log(i);
             if (this.files[i].path === oldPath) {
                 console.log('Found file ??>>>');
                 this.files[i].path = newPath;
                 this.files[i].name = newPath.slice(newPath.lastIndexOf('/') + 1);
                 if (this.files[i].links.length > 0) {
-                    this.files[i].links.map((j) => {
+                    this.files[i].links.map(async(j) => {
                         for (let k of Object.values(this.files)) {
                             if (k.path === j) {
-                                promiseList.push(new Promise((res, rej) => {
-                                    let oldRelPath = calcRelPath(j, oldPath),
-                                        newRelPath = calcRelPath(j, newPath),
-                                        file;
-                                    console.log("UPDATING THE INNER LINKS OF THE FILE>>>>>>");
-                                    readFile(this.files[k.id].path, 'utf-8')
-                                        .then(data => {
-                                            file = editLinks(data, newRelPath, oldRelPath);
-                                            writeFile(this.files[k.id].path, file)
-                                                .then(() => {
-                                                    res('Updated Reference links.');
-                                                })
-                                                .catch(() => {
-                                                    rej();
-                                                })
-                                        }).catch(err => {
-                                            console.error(err);
-                                            rej();
-                                        })
+                                let oldRelPath = calcRelPath(j, oldPath),
+                                    newRelPath = calcRelPath(j, newPath),
+                                    file;
+                                console.log("UPDATING THE INNER LINKS OF THE FILE>>>>>>");
+                                promiseList.push(new Promise(async(res, rej) => {
+                                    try {
+                                        let data = await (readFile(this.files[k.id].path, 'utf8'));
+                                        await updateFileData(this.files[k.id].path, newRelPath, oldRelPath, data);
+                                        console.log('Updated the file ^^^^^');
+                                        res();
+                                    } catch (err) {
+                                        rej(err);
+                                    } finally {
+                                        console.log('Dealt with the file');
+                                    }
                                 }))
                             }
                         }
@@ -131,9 +126,8 @@ class Watcher extends EventEmitter {
 
 
 function editLinks(data, newPath, oldPath) {
-    let newData = data;
-    newData = newData.replace(oldPath, newPath);
-    return newData;
+    // data is formatted differently then expected,
+    // thus indexOf oldPath in data = -1;
 }
 
 function calcRelPath(filePath, linkPath) {
@@ -172,6 +166,19 @@ function calcRelPath(filePath, linkPath) {
     }
 
     return RelPath;
+}
+
+function updateFileData(filePath, newRelPath, oldRelPath, data) {
+    return new Promise(async(res, rej) => {
+        let file = editLinks(data, newRelPath, oldRelPath);
+        try {
+            await writeFile(filePath, file);
+            console.log('Wrote The New Links@@@@00');
+            res();
+        } catch (err) {
+            rej();
+        }
+    })
 }
 
 module.exports = Watcher;
