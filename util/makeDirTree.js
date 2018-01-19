@@ -37,6 +37,8 @@ async function makeDirTree() {
         dirs = [],
         dir = root,
         relative = '';
+    AllFiles = {};
+
     dirs.push({ name: 'root', type: 'dir', path: `${dir}`, files: {} });
     dirTree['root'] = { name: 'root', type: 'dir', path: `${dir}`, files: {} };
     return new Promise(async(res, rej) => {

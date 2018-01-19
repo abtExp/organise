@@ -62,6 +62,7 @@ class Watcher extends EventEmitter {
 
     update(newFiles) {
         this.files = newFiles;
+        console.log('Updated this.files >>>');
     }
 
     async updateFiles(events, files) {
@@ -69,16 +70,19 @@ class Watcher extends EventEmitter {
             newPath = '';
         for (let i = 0; i < events.length; i++) {
             if (events[i] === 'add') {
-                if (events.length > 0) {
+                if (events.length > 1) {
                     newPath = files[i];
                     renameOrMove = true;
-                }
+                } else this.emit('update');
             }
             if (events[i] === 'unlink') {
-                if (renameOrMove) await this.updatePath(files[i], newPath);
+                if (renameOrMove) {
+                    await this.updatePath(files[i], newPath);
+                    console.log('Emiting Update event >>>');
+                    this.emit('update');
+                }
             }
         }
-        this.emit('update');
     }
 
     updatePath(oldPath, newPath) {
@@ -86,45 +90,49 @@ class Watcher extends EventEmitter {
         oldPath = './' + oldPath;
         newPath = './' + newPath;
         for (let i of Object.keys(this.files)) {
-            if (this.files[i].path === oldPath) this.files[i].path = newPath;
-            if (this.files[i].links.length > 0) {
-                this.files[i].links.map(async(j) => {
-                    let oldRelPath = calcRelPath(j, oldPath),
-                        newRelPath = calcRelPath(j, newPath);
-                    for (let k of Object.values(this.files)) {
-                        if (k.path === j) {
-                            promiseList.push(new Promise(async(res, rej) => {
-                                let file;
-                                readFile(this.files[k.id].path, 'utf-8')
-                                    .then(data => {
-                                        file = editLinks(data, newRelPath, oldRelPath);
-                                        writeFile(this.files[k.id].path, file)
-                                            .then(() => {
-                                                res('Updated Reference links.');
-                                            })
-                                            .catch(() => {
-                                                rej();
-                                            })
-                                    }).catch(err => {
-                                        console.error(err);
-                                        rej();
-                                    })
-                            }))
+            console.log(i);
+            if (this.files[i].path === oldPath) {
+                console.log('Found file ??>>>');
+                this.files[i].path = newPath;
+                this.files[i].name = newPath.slice(newPath.lastIndexOf('/') + 1);
+                if (this.files[i].links.length > 0) {
+                    this.files[i].links.map((j) => {
+                        for (let k of Object.values(this.files)) {
+                            if (k.path === j) {
+                                promiseList.push(new Promise((res, rej) => {
+                                    let oldRelPath = calcRelPath(j, oldPath),
+                                        newRelPath = calcRelPath(j, newPath),
+                                        file;
+                                    console.log("UPDATING THE INNER LINKS OF THE FILE>>>>>>");
+                                    readFile(this.files[k.id].path, 'utf-8')
+                                        .then(data => {
+                                            file = editLinks(data, newRelPath, oldRelPath);
+                                            writeFile(this.files[k.id].path, file)
+                                                .then(() => {
+                                                    res('Updated Reference links.');
+                                                })
+                                                .catch(() => {
+                                                    rej();
+                                                })
+                                        }).catch(err => {
+                                            console.error(err);
+                                            rej();
+                                        })
+                                }))
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
+            return Promise.all(promiseList);
         }
-        return Promise.all(promiseList);
     }
 }
 
 
 function editLinks(data, newPath, oldPath) {
-    console.log('editing links...');
-    console.log(data, newPath, oldPath);
     let newData = data;
-    newData.replace(oldPath, newPath);
+    newData = newData.replace(oldPath, newPath);
     return newData;
 }
 
