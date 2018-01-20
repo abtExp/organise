@@ -1,1 +1,2 @@
-import './sad/someFilesd';
+import './someFile';
+import './test';

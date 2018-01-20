@@ -95,7 +95,8 @@ function walkTree(dirPath) {
                             name: i,
                             type: 'file',
                             path: `${relative}${i}`,
-                            links: []
+                            imports: [],
+                            exports: []
                         }
                         AllFiles[id++] = file;
                     }

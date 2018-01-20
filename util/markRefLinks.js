@@ -21,13 +21,13 @@ module.exports = function markRefLinks(files) {
         matchN = ext === 'html' ? true : false;
         promiseList.push(new Promise(async(res, rej) => {
             let links = await findLinks(i.path, ext);
-            // marking exports
             if (links && links.length > 0) {
                 if (!matchN) links = links.filter(j => !(j.indexOf('./') === -1));
+                files[i.id].imports.push(...links);
                 links.map(k => {
                     for (let z of Object.values(files)) {
                         if (z.path.match(k)) {
-                            files[z.id].links.push(i.path);
+                            files[z.id].exports.push(i.path);
                         }
                     }
                 })

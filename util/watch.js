@@ -45,7 +45,6 @@ class Watcher extends EventEmitter {
     watch() {
         let eventList = [],
             filesList = [];
-
         this.globalWatcher.on('all', (e, f) => {
             if (eventList.length === 0) {
                 setTimeout(() => {
@@ -60,10 +59,23 @@ class Watcher extends EventEmitter {
         })
     }
 
+    /**
+     * @method update
+     * 
+     * @param {Object} newFiles - The Updated AllFiles 
+     * 
+     */
     update(newFiles) {
         this.files = newFiles;
     }
 
+    /**
+     * @method updateFiles
+     * 
+     * @param {Array} events - The Array of All Events 
+     * @param {Array} files - The Array of All Paths 
+     * 
+     */
     async updateFiles(events, files) {
         let renameOrMove = false,
             newPath = '';
@@ -83,6 +95,15 @@ class Watcher extends EventEmitter {
         }
     }
 
+    /**
+     * @method updatePath - Updates the paths of the reference links in the file
+     * 
+     * @param {String} oldPath - The Old Path of the file
+     * @param {String} newPath - The New Path of the file
+     * 
+     * @returns {Array}
+     *  
+     */
     updatePath(oldPath, newPath) {
         let promiseList = [];
         oldPath = './' + oldPath;
@@ -95,8 +116,8 @@ class Watcher extends EventEmitter {
                     oldPath = oldPath.slice(0, oldPath.lastIndexOf('.'));
                     newPath = newPath.slice(0, newPath.lastIndexOf('.'));
                 }
-                if (this.files[i].links.length > 0) {
-                    this.files[i].links.map(async(j) => {
+                if (this.files[i].exports.length > 0) {
+                    this.files[i].exports.map(async(j) => {
                         for (let k of Object.values(this.files)) {
                             if (k.path === j) {
                                 let oldRelPath = calcRelPath(j, oldPath),
@@ -116,18 +137,37 @@ class Watcher extends EventEmitter {
                     })
                 }
             }
-            return Promise.all(promiseList);
         }
+        return Promise.all(promiseList);
     }
 }
 
-
+/**
+ * @function editLinks - edits the reference links
+ * 
+ * @param {String} data 
+ * @param {String} newPath 
+ * @param {String} oldPath
+ * 
+ * @returns {String} edited file  
+ */
 function editLinks(data, newPath, oldPath) {
     let newData = data;
+    console.log(oldPath, newPath);
     newData = newData.split(oldPath).join(newPath);
     return newData;
 }
 
+/**
+ * @function calcRelPath - finds the relative path give 
+ *                         the file path and the referenced file path
+ * 
+ * @param {String} filePath 
+ * @param {String} linkPath
+ * 
+ * @returns {String} the relative path
+ *  
+ */
 function calcRelPath(filePath, linkPath) {
     let RelPath = '',
         PathList = linkPath.split('/'),
@@ -166,6 +206,18 @@ function calcRelPath(filePath, linkPath) {
     return RelPath;
 }
 
+/**
+ * @function updateFileData - edits the file and writes the 
+ *                            new data to the file.
+ * 
+ * @param {String} filePath 
+ * @param {String} newRelPath 
+ * @param {String} oldRelPath 
+ * @param {String} data 
+ * 
+ * @returns {Promise}
+ * 
+ */
 function updateFileData(filePath, newRelPath, oldRelPath, data) {
     return new Promise(async(res, rej) => {
         let file = editLinks(data, newRelPath, oldRelPath);
