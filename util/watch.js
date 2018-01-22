@@ -75,13 +75,13 @@ class Watcher extends EventEmitter {
         let renameOrMove = false,
             newPath = '';
         for (let i = 0; i < events.length; i++) {
-            if (events[i] === 'add') {
+            if (events[i].match('add')) {
                 if (events.length > 1) {
                     newPath = files[i];
                     renameOrMove = true;
                 } else this.emit('update');
             }
-            if (events[i] === 'unlink') {
+            if (events[i].match('unlink')) {
                 if (renameOrMove) {
                     await this.updatePath(files[i], newPath);
                     this.emit('update');

@@ -14,12 +14,8 @@ const fs = require('fs'),
  * @returns {String} edited file  
  */
 function editLinks(data, newPath, oldPath) {
-    console.log('oldPath : ', oldPath);
-    console.log('newPath : ', newPath);
     let newData = data;
-    console.log(newData);
     newData = newData.split(oldPath).join(newPath);
-    console.log(newData);
     return newData;
 }
 
@@ -34,6 +30,8 @@ function editLinks(data, newPath, oldPath) {
  *  
  */
 function calcRelPath(filePath, linkPath) {
+    console.log(filePath);
+    console.log(linkPath);
     let RelPath = '',
         PathList = linkPath.split('/'),
         filePathList = filePath.split('/');
@@ -66,7 +64,7 @@ function calcRelPath(filePath, linkPath) {
         }
         RelPath += PathList[PathList.length - 1];
     }
-
+    console.log(RelPath);
     return RelPath;
 }
 
@@ -95,7 +93,6 @@ function updateFileData(filePath, newRelPath, oldRelPath, data) {
 }
 
 function updateImports(currFile, oldPath, newPath) {
-    console.log('Updating import links...');
     return new Promise(async(res, rej) => {
         let file = await readFile(currFile.path, 'utf8');
         currFile.imports.map(async(i) => {
@@ -115,7 +112,6 @@ function updateImports(currFile, oldPath, newPath) {
 }
 
 function updateExports(files, currFile, oldPath, newPath) {
-    console.log('Updating export links...');
     let promiseList = [];
     currFile.exports.map(async(j) => {
         let oldRelPath = calcRelPath(j, oldPath),
