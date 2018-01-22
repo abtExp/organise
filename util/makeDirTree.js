@@ -38,6 +38,8 @@ async function makeDirTree() {
         dir = root,
         relative = '';
     AllFiles = {};
+    idx = 0;
+    id = 0;
 
     dirs.push({ name: 'root', type: 'dir', path: `${dir}`, files: {} });
     dirTree['root'] = { name: 'root', type: 'dir', path: `${dir}`, files: {} };

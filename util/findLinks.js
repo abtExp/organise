@@ -4,14 +4,13 @@ const fs = require('fs'),
 
 
 module.exports = function(dirpath, ext, mode = 'findPaths') {
-    // Currently only for html, js and ts files
     let links = [],
         regexp;
 
     if (ext === 'html')
-        regexp = /(?:script|link|style|img).*((href|src)(?==|\s=).*('([^']|'')))/gim;
+        regexp = /(?:script|link|style|img).*((href|src)(?==|\s=).*('([^']|'')))/gm;
     else if (ext.match(/js|ts/))
-        regexp = /((^import(?=\s).*('([^']|'')*'))|(require(?=\().*('([^']|'')*')\)))(;|,)$/gm;
+        regexp = /^import.*|(require(?=\().*(('([^']|'')*')|("([^"]|"")*"))\))(;|,)$/gm;
 
     if (regexp) {
         return new Promise((res, rej) => {

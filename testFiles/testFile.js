@@ -1,2 +1,4 @@
 import './someFile';
-import './test';
+import * as ts from './test';
+
+console.log('sadasf');

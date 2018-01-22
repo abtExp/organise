@@ -23,10 +23,10 @@ module.exports = function markRefLinks(files) {
             let links = await findLinks(i.path, ext);
             if (links && links.length > 0) {
                 if (!matchN) links = links.filter(j => !(j.indexOf('./') === -1));
-                files[i.id].imports.push(...links);
                 links.map(k => {
                     for (let z of Object.values(files)) {
                         if (z.path.match(k)) {
+                            files[i.id].imports.push(files[z.id].path);
                             files[z.id].exports.push(i.path);
                         }
                     }

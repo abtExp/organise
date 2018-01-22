@@ -1,1 +1,1 @@
-undefined
+import './testFile';
