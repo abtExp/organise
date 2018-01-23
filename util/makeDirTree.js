@@ -13,9 +13,7 @@ const fs = require('fs'),
  */
 const rootPath = './testFiles';
 
-let AllFiles = {},
-    idx = 0,
-    id = 0;
+let AllFiles, idx, id;
 
 
 /**

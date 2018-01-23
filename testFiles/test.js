@@ -1,1 +1,1 @@
-import './someDir/scripts/testFile';
+import './testFile';
