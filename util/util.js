@@ -92,19 +92,24 @@ function findExactPath(filePath, relPath) {
     let filePathList = filePath.split('/'),
         relPathList = relPath.split('/'),
         actualPath = '',
-        idx = 0,
+        i = 0,
         j = 0;
 
-    for (let i = 0; i < relPathList.length - 1; i++) {
-        if (relPathList[i] === '..') idx++;
+    while (relPathList[i] === '..') {
+        i++;
     }
 
-    for (; j < filePathList.length - 1 - idx; j++) {
+    for (; j < filePathList.length - 1 - i; j++) {
         actualPath += filePathList[j] + '/';
     }
 
-    for (let k = j; k < relPathList.length - 1; k++) {
-        actualPath += relPathList[k] + '/';
+    if (i === 0) {
+        i++;
+        if (relPathList[i] === filePathList[i]) i++;
+    }
+
+    for (; i < relPathList.length - 1; i++) {
+        actualPath += relPathList[i] + '/';
     }
 
     actualPath += relPathList[relPathList.length - 1];

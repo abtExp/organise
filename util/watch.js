@@ -42,8 +42,8 @@ class Watcher extends EventEmitter {
             filesList = [];
         this.globalWatcher.on('all', (e, f) => {
             if (eventList.length === 0) {
-                setTimeout(() => {
-                    this.updateFiles(eventList, filesList);
+                setTimeout(async() => {
+                    await this.updateFiles(eventList, filesList);
                     eventList = [];
                     filesList = [];
                     clearTimeout();
@@ -84,8 +84,8 @@ class Watcher extends EventEmitter {
             if (events[i].match('unlink')) {
                 if (renameOrMove) {
                     await this.updatePath(files[i], newPath);
-                    this.emit('update');
-                } else this.emit('update');
+                }
+                this.emit('update');
             }
         }
     }
