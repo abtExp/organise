@@ -69,6 +69,51 @@ function calcRelPath(filePath, linkPath) {
 }
 
 /**
+ * @function findExactPath - 
+ * given the scripts path and the relative path to referenced file
+ * calculates the path wrt root of the referenced file.   
+ * 
+ * ex -> ./testFiles/someDir/scripts/testFile.js imports ../../test.js
+ *  
+ * function returns ./testFiles/test.js 
+ * 
+ * ex -> ./testFiles/testFile.js imports ./test.js
+ * 
+ * function returns ./testFiles/test.js
+ * 
+ * opposite of calcRelPath 
+ * 
+ * 
+ * @param {String} filePath 
+ * @param {String} relPath 
+ * 
+ */
+function findExactPath(filePath, relPath) {
+    let filePathList = filePath.split('/'),
+        relPathList = relPath.split('/'),
+        actualPath = '',
+        idx = 0,
+        j = 0;
+
+    for (let i = 0; i < relPathList.length - 1; i++) {
+        if (relPathList[i] === '..') idx++;
+    }
+
+    for (; j < filePathList.length - 1 - idx; j++) {
+        actualPath += filePathList[j] + '/';
+    }
+
+    for (let k = j; k < relPathList.length - 1; k++) {
+        actualPath += relPathList[k] + '/';
+    }
+
+    actualPath += relPathList[relPathList.length - 1];
+
+    return actualPath;
+}
+
+
+/**
  * @function updateFileData - edits the file and writes the 
  *                            new data to the file.
  * 
@@ -135,38 +180,12 @@ function updateExports(files, currFile, oldPath, newPath) {
     return Promise.all(promiseList);
 }
 
-function findExactPath(filePath, relPath) {
-    /**
-     * given the scripts path and the relative path to referenced file
-     * calculates the path wrt root of the referenced file.   
-     * 
-     * ex -> ./testFiles/someDir/scripts/testFile.js imports ../../test.js
-     * 
-     * function returns actual path of test.js as ./testFiles/test.js 
-     * 
-     */
-
-    let path = '',
-        relPathList = relPath.split('/'),
-        filePathList = filePath.split('/'),
-        i = relPathList.length - 1;
-
-    while (relPathList[i] === '..') {
-        i--;
-    }
-    for (let j = 0; j < i; j++) {
-        path = path + filePathList[j] + '/';
-    }
-    path = path + relPathList[relPathList.length - 1];
-    return path;
-}
-
-
 
 module.exports = {
-    editLinks,
     calcRelPath,
+    editLinks,
+    findExactPath,
+    updateExports,
     updateFileData,
-    updateImports,
-    updateExports
+    updateImports
 }

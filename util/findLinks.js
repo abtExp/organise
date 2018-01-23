@@ -8,7 +8,7 @@ module.exports = function(dirpath, ext, mode = 'findPaths') {
         regexp;
 
     if (ext === 'html')
-        regexp = /(?:script|link|style|img).*((href|src)(?==|\s=).*(('([^']|'')*')|("([^"]|"")*")))/gm;
+        regexp = /(?:(href|src))=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gim;
     else if (ext.match(/js|ts/))
         regexp = /^import.*|(require(?=\().*(('([^']|'')*')|("([^"]|"")*"))\))(;|,)$/gm;
 

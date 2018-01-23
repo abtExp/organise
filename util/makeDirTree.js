@@ -119,8 +119,6 @@ function updateDirTree(file) {
      * 
      */
 
-
-
 }
 
 

@@ -1,4 +1,6 @@
-const findLinks = require('./findLinks');
+const findLinks = require('./findLinks'),
+    { findExactPath } = require('./util');
+
 
 /**
  * @function markRefLinks - marks all reference links (imports) for a file
@@ -24,6 +26,10 @@ module.exports = function markRefLinks(files) {
             if (links && links.length > 0) {
                 if (!matchN) links = links.filter(j => !(j.indexOf('./') === -1));
                 links.map(k => {
+                    console.log('files Path : ', i.path);
+                    console.log('found path : ', k);
+                    k = findExactPath(i.path, k);
+                    console.log('actual path : ', k);
                     for (let z of Object.values(files)) {
                         if (z.path.match(k)) {
                             files[i.id].imports.push(files[z.id].path);
