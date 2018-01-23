@@ -13,6 +13,7 @@ const fs = require('fs'),
  * 
  * @returns {String} edited file  
  */
+
 function editLinks(data, newPath, oldPath) {
     let newData = data;
     newData = newData.split(oldPath).join(newPath);
@@ -29,9 +30,8 @@ function editLinks(data, newPath, oldPath) {
  * @returns {String} the relative path
  *  
  */
+
 function calcRelPath(filePath, linkPath) {
-    console.log(filePath);
-    console.log(linkPath);
     let RelPath = '',
         PathList = linkPath.split('/'),
         filePathList = filePath.split('/');
@@ -64,7 +64,6 @@ function calcRelPath(filePath, linkPath) {
         }
         RelPath += PathList[PathList.length - 1];
     }
-    console.log(RelPath);
     return RelPath;
 }
 
@@ -80,6 +79,7 @@ function calcRelPath(filePath, linkPath) {
  * @returns {Promise}
  * 
  */
+
 function updateFileData(filePath, newRelPath, oldRelPath, data) {
     return new Promise(async(res, rej) => {
         let file = editLinks(data, newRelPath, oldRelPath);
@@ -113,12 +113,10 @@ function updateImports(currFile, oldPath, newPath) {
 
 function updateExports(files, currFile, oldPath, newPath) {
     let promiseList = [];
-    currFile.exports.map(async(j) => {
+    currFile.exports.map(j => {
         let oldRelPath = calcRelPath(j, oldPath),
             newRelPath = calcRelPath(j, newPath),
             file;
-        oldRelPath = oldRelPath.slice(0, oldRelPath.lastIndexOf('.'));
-        newRelPath = newRelPath.slice(0, newRelPath.lastIndexOf('.'));
         for (let k of Object.values(files)) {
             if (k.path === j) {
                 promiseList.push(new Promise(async(res, rej) => {

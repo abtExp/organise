@@ -118,6 +118,8 @@ class Watcher extends EventEmitter {
             }
         }
     }
+
+
 }
 
 module.exports = Watcher;
