@@ -1,5 +1,6 @@
 const fs = require('fs'),
     util = require('util'),
+    markRefLinks = require('./markRefLinks'),
     readFile = util.promisify(fs.readFile),
     writeFile = util.promisify(fs.writeFile);
 
@@ -133,6 +134,33 @@ function updateExports(files, currFile, oldPath, newPath) {
     })
     return Promise.all(promiseList);
 }
+
+function findExactPath(filePath, relPath) {
+    /**
+     * given the scripts path and the relative path to referenced file
+     * calculates the path wrt root of the referenced file.   
+     * 
+     * ex -> ./testFiles/someDir/scripts/testFile.js imports ../../test.js
+     * 
+     * function returns actual path of test.js as ./testFiles/test.js 
+     * 
+     */
+
+    let path = '',
+        relPathList = relPath.split('/'),
+        filePathList = filePath.split('/'),
+        i = relPathList.length - 1;
+
+    while (relPathList[i] === '..') {
+        i--;
+    }
+    for (let j = 0; j < i; j++) {
+        path = path + filePathList[j] + '/';
+    }
+    path = path + relPathList[relPathList.length - 1];
+    return path;
+}
+
 
 
 module.exports = {

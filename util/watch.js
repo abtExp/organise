@@ -85,7 +85,7 @@ class Watcher extends EventEmitter {
                 if (renameOrMove) {
                     await this.updatePath(files[i], newPath);
                     this.emit('update');
-                }
+                } else this.emit('update');
             }
         }
     }

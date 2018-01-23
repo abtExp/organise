@@ -7,11 +7,11 @@ const fs = require('fs'),
  * NOTE TO SELF : 
  * 
  * Currently The root directory of the script is being used to read the dirTree 
- * when releasing use the projects root directory and delete this note.
+ * when releasing use the project's root directory and delete this note.
  * 
  * 
  */
-const root = './testFiles';
+const rootPath = './testFiles';
 
 let AllFiles = {},
     idx = 0,
@@ -20,11 +20,6 @@ let AllFiles = {},
 
 /**
  * @function makeDirTree - creates the dirTree by reading the paths.
- * 
- * @param {string} dir - The name of the current directory to be searched
- *                       for files and inner directories to create the dirTree
- * 
- * @param {string} relative - The relative path to the dir from root
  * 
  * @returns {object} dirTree
  * 
@@ -35,7 +30,7 @@ async function makeDirTree() {
     console.log('Creating Directory Tree ...');
     let dirTree = {},
         dirs = [],
-        dir = root,
+        dir = rootPath,
         relative = '';
     AllFiles = {};
     idx = 0;
@@ -112,6 +107,22 @@ function walkTree(dirPath) {
             })
     })
 }
+
+
+function updateDirTree(file) {
+    /**
+     * Update a specific part of dirTree instead
+     * of fully recreating the dirTree.
+     * 
+     * useful for updating by updateImports and
+     * updateExports 
+     * 
+     */
+
+
+
+}
+
 
 
 module.exports = makeDirTree;
