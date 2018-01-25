@@ -1,6 +1,6 @@
 {
     "name": "organise",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A solution to reference errors when organizing your project",
     "main": "index.js",
     "author": "abtExp",
