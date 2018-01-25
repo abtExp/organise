@@ -5,7 +5,10 @@
     "main": "index.js",
     "author": "abtExp",
     "license": "MIT",
-    "repository": "https://github.com/abtExp/organise",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/abtExp/organise.git"
+    },
     "devDependencies": {
         "chokidar": "^2.0.0",
         "jest": "^22.0.6",
@@ -17,5 +20,15 @@
     },
     "bin": {
         "organise": "./index.js"
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/abtExp/organise/issues"
+    },
+    "homepage": "https://github.com/abtExp/organise#readme",
+    "keywords": [
+        "project management",
+        "organise",
+        "productivity",
+        "developer tool"
+    ]
 }
