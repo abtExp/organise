@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const markRefLinks = require('./util/markRefLinks'),
     makeDirTree = require('./util/makeDirTree'),
     Watcher = require('./util/watch'),
