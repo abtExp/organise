@@ -1,5 +1,6 @@
 const { updateImports, updateExports } = require('./util'),
-    findLinks = require('./findLinks'), { EventEmitter } = require('events'),
+    findLinks = require('./findLinks'),
+    { EventEmitter } = require('events'),
     chokidar = require('chokidar');
 
 /**

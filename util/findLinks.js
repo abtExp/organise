@@ -1,4 +1,5 @@
 const fs = require('fs'),
+    path = require('path'),
     util = require('util'),
     readFile = util.promisify(fs.readFile);
 
@@ -6,7 +7,6 @@ const fs = require('fs'),
 module.exports = function(dirpath, ext) {
     let links = [],
         regexp;
-
     if (ext === 'html')
         regexp = /(?:(href|src))=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gim;
     else if (ext.match(/js|ts/))
@@ -14,7 +14,7 @@ module.exports = function(dirpath, ext) {
 
     if (regexp) {
         return new Promise((res, rej) => {
-            readFile(dirpath, 'utf8')
+            readFile(path.resolve(dirpath), 'utf8')
                 .then(data => {
                     while (match = regexp.exec(data)) {
                         let pth;

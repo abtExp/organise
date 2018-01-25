@@ -3,18 +3,7 @@ const fs = require('fs'),
     util = require('util'),
     readdir = util.promisify(fs.readdir);
 
-/**
- * NOTE TO SELF : 
- * 
- * Currently The root directory of the script is being used to read the dirTree 
- * when releasing use the project's root directory and delete this note.
- * 
- * 
- */
-
 const ROOT = process.cwd();
-
-console.log(ROOT);
 
 let AllFiles, idx, id;
 
@@ -30,19 +19,18 @@ async function makeDirTree() {
     console.log('Creating Directory Tree ...');
     let dirTree = {},
         dirs = [],
-        dir = ROOT,
         relative = '';
     AllFiles = {};
     idx = 0;
     id = 0;
 
-    dirs.push({ name: 'root', type: 'dir', path: `${dir}`, files: {} });
-    dirTree['root'] = { name: 'root', type: 'dir', path: `${dir}`, files: {} };
+    dirs.push({ name: 'root', type: 'dir', path: `.`, files: {} });
+    dirTree['root'] = { name: 'root', type: 'dir', path: `.`, files: {} };
     return new Promise(async(res, rej) => {
         console.log('Reading files ...');
         while (dirs.length > 0) {
-            let activeDir = dirs.shift();
-            let files = await walkTree(activeDir.path);
+            let activeDir = dirs.shift(),
+            files = await walkTree(activeDir.path);
             if (files.length > 0) {
                 for (const i of files) {
                     let name = i.type === 'dir' ? i.name : idx++;
@@ -74,9 +62,11 @@ function walkTree(dirPath) {
         if (dirPath.match(/node_modules|.git|bower|LICENCE/)) {
             rej([]);
         }
-        const relative = `${dirPath}/`;
-        console.log(relative);
-        readdir(path.resolve(relative))
+
+        const relative = `${dirPath}/`,
+        readPath = dirPath === '.' ? ROOT+'/' : dirPath+'/';
+
+        readdir(path.resolve(readPath))
             .then(files => {
                 files.map(async(i) => {
                     let file;
