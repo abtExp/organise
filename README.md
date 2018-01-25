@@ -2,12 +2,14 @@
 A simple solution for reference errors when re-organizing your project structure.
 
 ## Installation 
-```npm install organise
+```
+npm install organise
 ```
 
 ## Command
 
-```$ organise
+```
+$ organise
 ```
 
 
