@@ -1,17 +1,13 @@
-# organize
+# organise
 A simple solution for reference errors when re-organizing your project structure.
 
 ## Installation 
-```
-npm install organize
-
+```npm install organise
 ```
 
 ## Command
 
-```
-$ organize
-
+```$ organise
 ```
 
 
@@ -21,7 +17,7 @@ This makes creates the hassle of going manually to every linked file to change t
 or resources.
 
 # Solution
-## Organize
+## Organise
 This Project solves this problem, when you want to restructure your project, just run organize and it'll create a directory tree keeping track of all links between all files, and sets a watcher on the projects root directory.
 On any rename or move event of files, it updates the directory tree, and also updates the files import paths and for every file that it imports, it updates the export paths as well, thus keeping the hassle out of your way so that you can focus on making the project.
 
