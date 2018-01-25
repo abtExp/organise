@@ -1,5 +1,5 @@
-import * as test from '../../test';
-import { someFile } from '../../someFile';
+import * as test from './test';
+import { someFile } from './someFile';
 
 // const fs = require('fs'),
 //     util = require('util'),
