@@ -47,7 +47,7 @@ class Watcher extends EventEmitter {
                     eventList = [];
                     filesList = [];
                     clearTimeout();
-                }, 1000);
+                }, 500);
             }
             eventList.push(e);
             filesList.push(f);

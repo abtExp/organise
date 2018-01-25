@@ -3,11 +3,10 @@ const fs = require('fs'),
     readFile = util.promisify(fs.readFile);
 
 
-module.exports = function(dirpath, ext, mode = 'findPaths') {
+module.exports = function(dirpath, ext) {
     let links = [],
         regexp;
 
-    console.log('finding links in : ', dirpath);
     if (ext === 'html')
         regexp = /(?:(href|src))=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gim;
     else if (ext.match(/js|ts/))
@@ -19,16 +18,12 @@ module.exports = function(dirpath, ext, mode = 'findPaths') {
                 .then(data => {
                     while (match = regexp.exec(data)) {
                         let pth;
-                        if (mode === 'findPaths') {
-                            if (match[0].indexOf('\''))
-                                pth = match[0].slice(match[0].indexOf(`\'`) + 1, match[0].lastIndexOf(`\'`));
-                            else pth = match[0].slice(match[0].indexOf(`\"`) + 1, match[0].lastIndexOf(`\"`));
-                            if (pth.match(/.html|.css|.js|.ts$/)) links.push(pth);
-                            else links.push(`${pth}.js`);
-                        } else links.push(match);
+                        if (match[0].indexOf('\''))
+                            pth = match[0].slice(match[0].indexOf(`\'`) + 1, match[0].lastIndexOf(`\'`));
+                        else pth = match[0].slice(match[0].indexOf(`\"`) + 1, match[0].lastIndexOf(`\"`));
+                        if (pth.match(/.html|.css|.js|.ts$/)) links.push(pth);
+                        else links.push(`${pth}.js`);
                     }
-                    console.log('found links for : ', dirpath);
-                    console.log(links);
                     res(links);
                 })
                 .catch(err => {

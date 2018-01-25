@@ -23,14 +23,10 @@ module.exports = function markRefLinks(files) {
         matchN = ext === 'html' ? true : false;
         promiseList.push(new Promise(async(res, rej) => {
             let links = await findLinks(i.path, ext);
-            console.log('for file : ', i.path);
             if (links && links.length > 0) {
                 if (!matchN) links = links.filter(j => !(j.indexOf('./') === -1));
                 links.map(k => {
-                    if (k[0] !== '.') k = './' + k;
-                    console.log('found path : ', k);
                     k = findExactPath(i.path, k);
-                    console.log('actual path : ', k);
                     for (let z of Object.values(files)) {
                         if (z.path.match(k)) {
                             files[i.id].imports.push(files[z.id].path);

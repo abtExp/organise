@@ -11,10 +11,12 @@ const fs = require('fs'),
  * 
  * 
  */
-const rootPath = './testFiles';
+
+const ROOT = process.cwd();
+
+console.log(ROOT);
 
 let AllFiles, idx, id;
-
 
 /**
  * @function makeDirTree - creates the dirTree by reading the paths.
@@ -28,7 +30,7 @@ async function makeDirTree() {
     console.log('Creating Directory Tree ...');
     let dirTree = {},
         dirs = [],
-        dir = rootPath,
+        dir = ROOT,
         relative = '';
     AllFiles = {};
     idx = 0;
@@ -73,7 +75,8 @@ function walkTree(dirPath) {
             rej([]);
         }
         const relative = `${dirPath}/`;
-        readdir(relative)
+        console.log(relative);
+        readdir(path.resolve(relative))
             .then(files => {
                 files.map(async(i) => {
                     let file;

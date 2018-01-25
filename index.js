@@ -2,11 +2,13 @@ const markRefLinks = require('./util/markRefLinks'),
     makeDirTree = require('./util/makeDirTree'),
     Watcher = require('./util/watch'),
     util = require('util'),
+    path = require('path'),
     fs = require('fs'),
+    readFile = util.promisify(fs.readFile),
     writeFile = util.promisify(fs.writeFile);
 
-console.log('Organizing...');
 
+console.log('Organizing...');
 
 /**
  * @function keepOrganized
@@ -18,7 +20,6 @@ console.log('Organizing...');
  * 
  */
 
-let idx = 0;
 
 function init() {
     try {
@@ -44,7 +45,7 @@ function init() {
 async function keepOrganized() {
     let [dirTree, AllFiles] = await makeDirTree();
     await markRefLinks(AllFiles);
-    await writeFile('tree.json', JSON.stringify(dirTree))
+    await writeFile('tree.json', JSON.stringify(dirTree, null, 4));
     return AllFiles;
 }
 

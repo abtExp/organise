@@ -70,19 +70,6 @@ function calcRelPath(filePath, linkPath) {
 
 /**
  * @function findExactPath - 
- * given the scripts path and the relative path to referenced file
- * calculates the path wrt root of the referenced file.   
- * 
- * ex -> ./testFiles/someDir/scripts/testFile.js imports ../../test.js
- *  
- * function returns ./testFiles/test.js 
- * 
- * ex -> ./testFiles/testFile.js imports ./test.js
- * 
- * function returns ./testFiles/test.js
- * 
- * opposite of calcRelPath 
- * 
  * 
  * @param {String} filePath 
  * @param {String} relPath 
