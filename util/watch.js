@@ -1,6 +1,5 @@
 const { updateImports, updateExports } = require('./util'),
-    findLinks = require('./findLinks'),
-    { EventEmitter } = require('events'),
+    findLinks = require('./findLinks'), { EventEmitter } = require('events'),
     chokidar = require('chokidar');
 
 /**
@@ -10,6 +9,15 @@ const { updateImports, updateExports } = require('./util'),
  *                  dirTree only for linked files.
  * 
  */
+
+/* Have to implement a queue based update system to  ************
+ * avoid opening a file again and again.             ************
+ *      _______   _____           _____     _____    ************
+ ****  |#######| /#####\          |####\   /#####\   ************
+ ****     |#|   |#|   |#|  _____  |#| |#| |#|   |#|  ************
+ ****     |#|   |#|   |#| |_____| |#|_|#| |#|   |#|  ************
+ ****     |#|    \#####/          |####/   \#####/   ************
+ ***************************************************************/
 
 class Watcher extends EventEmitter {
     /**
