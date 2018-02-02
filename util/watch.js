@@ -1,5 +1,5 @@
-const { updateImports, updateExports } = require('./util'),
-    findLinks = require('./findLinks'), { EventEmitter } = require('events'),
+const { updateImports, updateExports } = require('./util');
+const { EventEmitter } = require('events'),
     chokidar = require('chokidar');
 
 /**
@@ -9,15 +9,6 @@ const { updateImports, updateExports } = require('./util'),
  *                  dirTree only for linked files.
  * 
  */
-
-/* Have to implement a queue based update system to  ************
- * avoid opening a file again and again.             ************
- *      _______   _____           _____     _____    ************
- ****  |#######| /#####\          |####\   /#####\   ************
- ****     |#|   |#|   |#|  _____  |#| |#| |#|   |#|  ************
- ****     |#|   |#|   |#| |_____| |#|_|#| |#|   |#|  ************
- ****     |#|    \#####/          |####/   \#####/   ************
- ***************************************************************/
 
 class Watcher extends EventEmitter {
     /**
@@ -35,6 +26,7 @@ class Watcher extends EventEmitter {
     constructor(files) {
         super();
         this.files = files;
+        this.fileList = [];
         this.globalWatcher = chokidar.watch('.', { ignored: [/node_modules/, /tree.json/], ignoreInitial: true });
         this.watch();
     }
@@ -52,7 +44,7 @@ class Watcher extends EventEmitter {
         this.globalWatcher.on('all', (e, f) => {
             if (eventList.length === 0) {
                 setTimeout(async() => {
-                    await this.updateFiles(eventList, filesList);
+                    this.updateFiles(eventList, filesList);
                     eventList = [];
                     filesList = [];
                     clearTimeout();
@@ -80,23 +72,34 @@ class Watcher extends EventEmitter {
      * @param {Array} files - The Array of All Paths 
      * 
      */
+
+
+    /* Have to implement a queue based update system to  ************
+     * avoid opening a file again and again.             ************
+     *      _______   _____           _____     _____    ************
+     ****  |#######| /#####\          |####\   /#####\   ************
+     ****     |#|   |#|   |#|  _____  |#| |#| |#|   |#|  ************
+     ****     |#|   |#|   |#| |_____| |#|_|#| |#|   |#|  ************
+     ****     |#|    \#####/          |####/   \#####/   ************
+     ***************************************************************/
+
     async updateFiles(events, files) {
         let renameOrMove = false,
             newPath = '';
         for (let i = 0; i < events.length; i++) {
-            if (events[i].match('add')) {
+            if (events[i] === 'add') {
                 if (events.length > 1) {
-                    newPath = files[i];
+                    this.fileList.push(files[i]);
                     renameOrMove = true;
                 } else this.emit('update');
             }
-            if (events[i].match('unlink')) {
+            if (events[i] === 'unlink') {
                 if (renameOrMove) {
-                    await this.updatePath(files[i], newPath);
-                }
-                this.emit('update');
+                    await this.updatePath(files[i], this.fileList.shift());
+                } else this.emit('update');
             }
         }
+        this.emit('update');
     }
 
     /**

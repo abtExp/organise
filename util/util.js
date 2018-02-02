@@ -133,7 +133,7 @@ function updateFileData(filePath, newRelPath, oldRelPath, data) {
 function updateImports(currFile, oldPath, newPath) {
     return new Promise(async(res, rej) => {
         let file = await readFile(currFile.path, 'utf8');
-        currFile.imports.map(async(i) => {
+        currFile.imports.map(i => {
             let oldRelPath = calcRelPath(oldPath, i),
                 newRelPath = calcRelPath(newPath, i);
             oldRelPath = oldRelPath.slice(0, oldRelPath.lastIndexOf('.'));

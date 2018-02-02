@@ -30,7 +30,7 @@ async function makeDirTree() {
         console.log('Reading files ...');
         while (dirs.length > 0) {
             let activeDir = dirs.shift(),
-            files = await walkTree(activeDir.path);
+                files = await walkTree(activeDir.path);
             if (files.length > 0) {
                 for (const i of files) {
                     let name = i.type === 'dir' ? i.name : idx++;
@@ -59,12 +59,12 @@ async function makeDirTree() {
 function walkTree(dirPath) {
     let filesindir = [];
     return new Promise((res, rej) => {
-        if (dirPath.match(/node_modules|.git|bower|LICENCE/)) {
+        if (dirPath.match(/node_modules|.git|bower|LICENCE|tree.json/)) {
             rej([]);
         }
 
         const relative = `${dirPath}/`,
-        readPath = dirPath === '.' ? ROOT+'/' : dirPath+'/';
+            readPath = dirPath === '.' ? ROOT + '/' : dirPath + '/';
 
         readdir(path.resolve(readPath))
             .then(files => {
