@@ -17,7 +17,6 @@ const fs = require('fs'),
 
 function editLinks(data, newPath, oldPath) {
     let newData = data;
-    console.log(`Changing ${oldPath} -> ${newPath}`);
     newData = newData.split(oldPath).join(newPath);
     return newData;
 }
