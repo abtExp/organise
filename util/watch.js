@@ -95,10 +95,12 @@ class Watcher extends EventEmitter {
             }
             if (events[i] === 'unlink') {
                 if (renameOrMove) {
-                    await this.updatePath(files[i], this.fileList.shift());
+                    this.updatePath(files[i], this.fileList.shift());
                 } else this.emit('update');
             }
         }
+
+        await Promise.all(this.pendingUpdatesQueue);
         this.emit('update');
     }
 

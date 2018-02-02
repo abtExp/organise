@@ -9,7 +9,22 @@
             "type": "file",
             "path": "./testFile.js",
             "imports": [
-                "./resources/i1.js"
+                "./someDir/index.js",
+                "./resources/i1.js",
+                "./resources/i2.js",
+                "./resources/i3.js",
+                "./resources/i4.js",
+                "./resources/i5.js",
+                "./resources/i6.js",
+                "./resources/i7.js",
+                "./resources/i8.js",
+                "./resources/i9.js",
+                "./resources/i10.js",
+                "./resources/i11.js",
+                "./resources/i12.js",
+                "./resources/i13.js",
+                "./resources/i14.js",
+                "./resources/i15.js"
             ],
             "exports": [
                 "./docs/index.html"
@@ -31,7 +46,7 @@
             "type": "file",
             "path": "./tst.js",
             "imports": [
-                "./resources/i1.js"
+                "./someDir/index.js"
             ],
             "exports": [
                 "./resources/i1.js",
@@ -47,8 +62,8 @@
                 "./resources/i5.js",
                 "./resources/i6.js",
                 "./resources/i7.js",
-                "./resources/i8.js",
-                "./resources/i9.js"
+                "./resources/i9.js",
+                "./resources/i8.js"
             ],
             "extension": "js"
         },
@@ -84,8 +99,7 @@
                         "./tst.js"
                     ],
                     "exports": [
-                        "./testFile.js",
-                        "./tst.js"
+                        "./testFile.js"
                     ],
                     "extension": "js"
                 },
@@ -97,7 +111,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "6": {
@@ -108,7 +124,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "7": {
@@ -119,7 +137,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "8": {
@@ -130,7 +150,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "9": {
@@ -141,7 +163,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "10": {
@@ -152,7 +176,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "11": {
@@ -163,7 +189,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "12": {
@@ -174,7 +202,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "13": {
@@ -185,7 +215,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "14": {
@@ -196,7 +228,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "15": {
@@ -207,7 +241,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "16": {
@@ -218,7 +254,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "17": {
@@ -229,7 +267,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 },
                 "18": {
@@ -240,7 +280,9 @@
                     "imports": [
                         "./tst.js"
                     ],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js"
+                    ],
                     "extension": "js"
                 }
             }
@@ -256,7 +298,10 @@
                     "type": "file",
                     "path": "./someDir/index.js",
                     "imports": [],
-                    "exports": [],
+                    "exports": [
+                        "./testFile.js",
+                        "./tst.js"
+                    ],
                     "extension": "js"
                 }
             }
