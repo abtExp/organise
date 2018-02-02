@@ -44,7 +44,7 @@ class Watcher extends EventEmitter {
         this.globalWatcher.on('all', (e, f) => {
             if (eventList.length === 0) {
                 setTimeout(async() => {
-                    this.updateFiles(eventList, filesList);
+                    await this.updateFiles(eventList, filesList);
                     eventList = [];
                     filesList = [];
                     clearTimeout();
@@ -72,17 +72,6 @@ class Watcher extends EventEmitter {
      * @param {Array} files - The Array of All Paths 
      * 
      */
-
-
-    /* Have to implement a queue based update system to  ************
-     * avoid opening a file again and again.             ************
-     *      _______   _____           _____     _____    ************
-     ****  |#######| /#####\          |####\   /#####\   ************
-     ****     |#|   |#|   |#|  _____  |#| |#| |#|   |#|  ************
-     ****     |#|   |#|   |#| |_____| |#|_|#| |#|   |#|  ************
-     ****     |#|    \#####/          |####/   \#####/   ************
-     ***************************************************************/
-
     async updateFiles(events, files) {
         let renameOrMove = false,
             newPath = '';
@@ -95,13 +84,10 @@ class Watcher extends EventEmitter {
             }
             if (events[i] === 'unlink') {
                 if (renameOrMove) {
-                    this.updatePath(files[i], this.fileList.shift());
+                    await this.updatePath(files[i], this.fileList.shift());
                 } else this.emit('update');
             }
         }
-
-        await Promise.all(this.pendingUpdatesQueue);
-        this.emit('update');
     }
 
     /**

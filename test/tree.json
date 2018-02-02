@@ -62,8 +62,8 @@
                 "./resources/i5.js",
                 "./resources/i6.js",
                 "./resources/i7.js",
-                "./resources/i9.js",
-                "./resources/i8.js"
+                "./resources/i8.js",
+                "./resources/i9.js"
             ],
             "extension": "js"
         },
