@@ -40,7 +40,8 @@ function calcRelPath(filePath, linkPath) {
 
     for (let i = 1; i < filePathList.length - 1; i++) {
         idx = i;
-        if (filePathList[i] === linkPathList[i]) break;
+        if (filePathList[i] === linkPathList[i] || linkPathList[i] === undefined)
+            break;
         RelPath += '../';
     }
 
