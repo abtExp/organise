@@ -88,6 +88,7 @@ class Watcher extends EventEmitter {
                 } else this.emit('update');
             }
         }
+        this.emit('update');
     }
 
     /**
@@ -118,8 +119,6 @@ class Watcher extends EventEmitter {
             }
         }
     }
-
-
 }
 
 module.exports = Watcher;

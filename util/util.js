@@ -33,44 +33,29 @@ function editLinks(data, newPath, oldPath) {
  */
 
 function calcRelPath(filePath, linkPath) {
-    console.log('calcRelPath');
-    console.log(`filePath : ${filePath}, linkPath : ${linkPath}`);
     let RelPath = '',
         linkPathList = linkPath.split('/'),
-        filePathList = filePath.split('/');
-    if (filePathList.length >= linkPathList.length) {
-        let idx = 0;
-        for (let i = 1; i < filePathList.length - 1; i++) {
-            if (linkPathList[i] !== undefined && linkPathList[i] !== filePathList[i]) {
-                idx = i;
-                break;
-            }
-        }
-        if (idx !== 0) {
-            for (let i = 0; i < (filePathList.length - 1 - idx); i++) {
-                RelPath += '../';
-            }
-        }
+        filePathList = filePath.split('/'),
+        idx = 0;
 
-        for (let i = idx; i < linkPathList.length - 1; i++) {
-            RelPath += linkPathList[i] + '/';
-        }
-        RelPath += linkPathList[linkPathList.length - 1];
-    } else {
-        for (let i = 1; i < linkPathList.length; i++) {
-            if (filePathList[i] !== undefined && filePathList[i] !== linkPathList[i]) {
-                idx = i;
-                break;
-            }
-        }
-        RelPath += './';
-        for (let i = idx; i < linkPathList.length - 1; i++) {
-            RelPath += linkPathList[i] + '/';
-        }
-        RelPath += linkPathList[linkPathList.length - 1];
+    for (let i = 1; i < filePathList.length - 1; i++) {
+        idx = i;
+        if (filePathList[i] === linkPathList[i]) break;
+        RelPath += '../';
     }
 
-    console.log(`RelPath : ${RelPath}`);
+    if (RelPath.length === 0) {
+        RelPath += './';
+        idx += 1;
+    }
+
+    if (idx === 0) idx += 1;
+
+    for (let i = idx; i < linkPathList.length - 1; i++) {
+        RelPath += linkPathList[i] + '/';
+    }
+
+    RelPath += linkPathList[linkPathList.length - 1];
     return RelPath;
 }
 
@@ -140,14 +125,9 @@ function updateImports(currFile, oldPath, newPath) {
     return new Promise(async(res, rej) => {
         let file = await readFile(currFile.path, 'utf8');
         currFile.imports.map(i => {
-            console.log(`imported file : ${i}`);
-            console.log(`currentFiles oldPath : ${oldPath}`);
-            console.log(`currentFiles newPath : ${newPath}`);
+            i = i.slice(0, i.lastIndexOf('.'));
             let oldRelPath = calcRelPath(oldPath, i),
                 newRelPath = calcRelPath(newPath, i);
-            console.log(`relative Paths: old:${oldRelPath}, new:${newRelPath}`);
-            oldRelPath = oldRelPath.slice(0, oldRelPath.lastIndexOf('.'));
-            newRelPath = newRelPath.slice(0, newRelPath.lastIndexOf('.'));
             file = editLinks(file, newRelPath, oldRelPath);
         })
         try {
