@@ -1,0 +1,220 @@
+{
+    "name": "root",
+    "type": "dir",
+    "path": ".",
+    "files": {
+        "0": {
+            "id": 0,
+            "name": "tree.json",
+            "type": "file",
+            "path": "./tree.json",
+            "imports": [],
+            "exports": [],
+            "extension": "json"
+        },
+        "1": {
+            "id": 1,
+            "name": "tst.js",
+            "type": "file",
+            "path": "./tst.js",
+            "imports": [
+                "./someDir/index.js"
+            ],
+            "exports": [
+                "./resources/i1.js",
+                "./resources/i2.js",
+                "./resources/i3.js",
+                "./resources/i4.js",
+                "./resources/i5.js",
+                "./resources/i6.js",
+                "./resources/i7.js",
+                "./resources/i8.js",
+                "./resources/i9.js"
+            ],
+            "extension": "js"
+        },
+        "docs": {
+            "name": "docs",
+            "type": "dir",
+            "path": "./docs",
+            "files": {
+                "2": {
+                    "id": 2,
+                    "name": "index.html",
+                    "type": "file",
+                    "path": "./docs/index.html",
+                    "imports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "exports": [],
+                    "extension": "html"
+                }
+            }
+        },
+        "resources": {
+            "name": "resources",
+            "type": "dir",
+            "path": "./resources",
+            "files": {
+                "3": {
+                    "id": 3,
+                    "name": "i1.js",
+                    "type": "file",
+                    "path": "./resources/i1.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "4": {
+                    "id": 4,
+                    "name": "i2.js",
+                    "type": "file",
+                    "path": "./resources/i2.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "5": {
+                    "id": 5,
+                    "name": "i3.js",
+                    "type": "file",
+                    "path": "./resources/i3.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "6": {
+                    "id": 6,
+                    "name": "i4.js",
+                    "type": "file",
+                    "path": "./resources/i4.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "7": {
+                    "id": 7,
+                    "name": "i5.js",
+                    "type": "file",
+                    "path": "./resources/i5.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "8": {
+                    "id": 8,
+                    "name": "i6.js",
+                    "type": "file",
+                    "path": "./resources/i6.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "9": {
+                    "id": 9,
+                    "name": "i7.js",
+                    "type": "file",
+                    "path": "./resources/i7.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "10": {
+                    "id": 10,
+                    "name": "i8.js",
+                    "type": "file",
+                    "path": "./resources/i8.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "11": {
+                    "id": 11,
+                    "name": "i9.js",
+                    "type": "file",
+                    "path": "./resources/i9.js",
+                    "imports": [
+                        "./tst.js"
+                    ],
+                    "exports": [
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                }
+            }
+        },
+        "someDir": {
+            "name": "someDir",
+            "type": "dir",
+            "path": "./someDir",
+            "files": {
+                "12": {
+                    "id": 12,
+                    "name": "index.js",
+                    "type": "file",
+                    "path": "./someDir/index.js",
+                    "imports": [],
+                    "exports": [
+                        "./tst.js",
+                        "./someDir/testFile.js"
+                    ],
+                    "extension": "js"
+                },
+                "13": {
+                    "id": 13,
+                    "name": "testFile.js",
+                    "type": "file",
+                    "path": "./someDir/testFile.js",
+                    "imports": [
+                        "./someDir/index.js",
+                        "./resources/i1.js",
+                        "./resources/i2.js",
+                        "./resources/i3.js",
+                        "./resources/i4.js",
+                        "./resources/i5.js",
+                        "./resources/i6.js",
+                        "./resources/i7.js",
+                        "./resources/i8.js",
+                        "./resources/i9.js"
+                    ],
+                    "exports": [
+                        "./docs/index.html"
+                    ],
+                    "extension": "js"
+                }
+            }
+        }
+    }
+}

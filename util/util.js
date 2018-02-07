@@ -32,15 +32,21 @@ function editLinks(data, newPath, oldPath) {
  *  
  */
 
+
+
+
+
+
+
 function calcRelPath(filePath, linkPath) {
     let RelPath = '',
         linkPathList = linkPath.split('/'),
         filePathList = filePath.split('/'),
         idx = 0;
-
+    console.log(`File Path : ${filePath}, link path : ${linkPath}`);
     for (let i = 1; i < filePathList.length - 1; i++) {
         idx = i;
-        if (filePathList[i] === linkPathList[i] || linkPathList[i] === undefined)
+        if (filePathList[i] === linkPathList[i])
             break;
         RelPath += '../';
     }
@@ -57,8 +63,17 @@ function calcRelPath(filePath, linkPath) {
     }
 
     RelPath += linkPathList[linkPathList.length - 1];
+    console.log(`RelPath : ${RelPath}`);
     return RelPath;
 }
+
+
+
+
+
+
+
+
 
 /**
  * @function findExactPath - 
@@ -124,18 +139,26 @@ function updateFileData(filePath, newRelPath, oldRelPath, data) {
 
 function updateImports(currFile, oldPath, newPath) {
     return new Promise(async(res, rej) => {
-        let file = await readFile(currFile.path, 'utf8');
-        currFile.imports.map(i => {
-            i = i.slice(0, i.lastIndexOf('.'));
-            let oldRelPath = calcRelPath(oldPath, i),
-                newRelPath = calcRelPath(newPath, i);
-            file = editLinks(file, newRelPath, oldRelPath);
-        })
+        let file;
         try {
-            await writeFile(currFile.path, file);
-            res();
+            file = await readFile(currFile.path, 'utf8');
         } catch (err) {
             rej(err);
+        }
+        if (file) {
+            currFile.imports.map(i => {
+                i = i.slice(0, i.lastIndexOf('.'));
+                let oldRelPath = calcRelPath(oldPath, i),
+                    newRelPath = calcRelPath(newPath, i);
+                console.log(`For File : ${currFile.path}, updating : ${oldRelPath} -> ${newRelPath}`);
+                file = editLinks(file, newRelPath, oldRelPath);
+            })
+            try {
+                await writeFile(currFile.path, file);
+                res();
+            } catch (err) {
+                rej(err);
+            }
         }
     });
 }
