@@ -101,10 +101,14 @@ class Watcher extends EventEmitter {
      *  
      */
     async updatePath(oldPath, newPath) {
+        oldPath = oldPath.replace('\\', '/');
+        newPath = newPath.replace('\\', '/');
+        console.log(`WHILE UPDATING PATHS OLD_PATH : ${oldPath}, NEW_PATH : ${newPath}`);
         let promiseList = [];
         oldPath = './' + oldPath;
         newPath = './' + newPath;
         for (let i of Object.keys(this.files)) {
+            this.files[i].path = this.files[i].path.replace('\\', '/');
             if (this.files[i].path === oldPath) {
                 this.files[i].path = newPath;
                 this.files[i].name = newPath.slice(newPath.lastIndexOf('/') + 1);

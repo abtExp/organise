@@ -31,14 +31,9 @@ function editLinks(data, newPath, oldPath) {
  * @returns {String} the relative path
  *  
  */
-
-
-
-
-
-
-
 function calcRelPath(filePath, linkPath) {
+    filePath = filePath.replace(`\\`, `/`);
+    linkPath = linkPath.replace(`\\`, `/`);
     let RelPath = '',
         linkPathList = linkPath.split('/'),
         filePathList = filePath.split('/'),
@@ -66,14 +61,6 @@ function calcRelPath(filePath, linkPath) {
     console.log(`RelPath : ${RelPath}`);
     return RelPath;
 }
-
-
-
-
-
-
-
-
 
 /**
  * @function findExactPath - 
@@ -138,6 +125,7 @@ function updateFileData(filePath, newRelPath, oldRelPath, data) {
 }
 
 function updateImports(currFile, oldPath, newPath) {
+    currFile.path = currFile.path.replace(`\\`, `/`);
     return new Promise(async(res, rej) => {
         let file;
         try {

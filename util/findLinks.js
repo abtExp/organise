@@ -18,9 +18,9 @@ module.exports = function(dirpath, ext) {
                 .then(data => {
                     while (match = regexp.exec(data)) {
                         let pth;
-                        if (match[0].indexOf('\''))
-                            pth = match[0].slice(match[0].indexOf(`\'`) + 1, match[0].lastIndexOf(`\'`));
-                        else pth = match[0].slice(match[0].indexOf(`\"`) + 1, match[0].lastIndexOf(`\"`));
+                        if (match[0].indexOf(`'`))
+                            pth = match[0].slice(match[0].indexOf(`'`) + 1, match[0].lastIndexOf(`'`));
+                        else pth = match[0].slice(match[0].indexOf(`"`) + 1, match[0].lastIndexOf(`"`));
                         if (pth.match(/.html|.css|.js|.ts$/)) links.push(pth);
                         else links.push(`${pth}.js`);
                     }
